@@ -25,7 +25,8 @@ def register_view(request, *args, **kwargs):
 			return redirect('home')
 		else:
 			context['registration_form'] = form
-
+	elif request.htmx:
+		return render(request, 'account/snippets/register.html', context)
 	else:
 		form = RegistrationForm()
 		context['registration_form'] = form
@@ -59,7 +60,8 @@ def login_view(request, *args, **kwargs):
 				if destination:
 					return redirect(destination)
 				return redirect("home")
-
+	elif request.htmx:
+		return render(request, 'account/snippets/login.html', context)
 	else:
 		pass
 		form = LoginAuthenticationForm()
