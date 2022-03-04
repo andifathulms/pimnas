@@ -127,11 +127,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'django.contrib.auth.backends.AllowAllUsersModelBackend',
     'account.backends.EmailOrIdentificationBackend',
-    #'account.backends.IDAuthBackend',
-    #
-    #
-    #
-    #'account.backends.CaseInsensitiveModelBackend',
 )
 
 # Internationalization

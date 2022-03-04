@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 
-from account.forms import RegistrationForm, AccountAuthenticationForm
+from account.forms import RegistrationForm, AccountAuthenticationForm, LoginAuthenticationForm
 
 
 def register_view(request, *args, **kwargs):
@@ -48,7 +48,7 @@ def login_view(request, *args, **kwargs):
 	print("destination: " + str(destination))
 
 	if request.POST:
-		form = AccountAuthenticationForm(request.POST)
+		form = LoginAuthenticationForm(request.POST)
 		if form.is_valid():
 			email = request.POST['email']
 			password = request.POST['password']
@@ -62,7 +62,7 @@ def login_view(request, *args, **kwargs):
 
 	else:
 		pass
-		form = AccountAuthenticationForm()
+		form = LoginAuthenticationForm()
 
 	context['login_form'] = form
 
