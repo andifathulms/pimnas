@@ -1,6 +1,0 @@
-<form class="p-3 mt-3" method="POST"> {% csrf_token %}
-    <div class="form-field d-flex align-items-center"> <span class="far fa-envelope"></span> <input type="text" name="email" id="inputEmail" placeholder="Email"> </div>
-    <button class="btn mt-3" type="submit">Change password</button>
-</form>
-<div class="text-center fs-6"> <a href="#" hx-get="{% url 'login' %}" hx-swap="innerHTML" hx-target="#target">Back to login</a> or <a href="#" hx-get="{% url 'register' %}" hx-swap="innerHTML" hx-target="#target" >Sign up</a> </div>
-<div class="text-center fs-6 mt-2"><p>Copyright &copy; SteveG08</p></div>

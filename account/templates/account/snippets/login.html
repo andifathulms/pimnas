@@ -2,7 +2,7 @@
     <div class="form-field d-flex align-items-center"> <span class="far fa-envelope"></span> <input type="text" name="email" id="inputEmail" placeholder="Email/NoBP"> </div>
     <div class="form-field d-flex align-items-center"> <span class="fas fa-key"></span> <input type="password" name="password" id="inputPassword" placeholder="Password"> </div> <button class="btn mt-3" type="submit">Login</button>
 </form>
-<div class="text-center fs-6"> <a href="#">Forget password?</a> or <a href="#" hx-get="{% url 'register' %}" hx-swap="innerHTML" hx-target="#target" >Sign up</a> </div>
+<div class="text-center fs-6"> <a href="{% url 'password_reset' %}">Forget password?</a> or <a href="#" hx-get="{% url 'register' %}" hx-swap="innerHTML" hx-target="#target" >Sign up</a> </div>
 <div class="text-center fs-6 mt-2"><p>Copyright &copy; SteveG08</p></div>
 
 {% for field in login_form %}
@@ -17,3 +17,16 @@
 	<p>{{login_form.non_field_errors}}</p>
 </div>
 {% endif %}
+
+<script>
+	// Current URL: https://my-website.com/page_a
+	var nextURL = 'http://127.0.0.1:8000/login/';
+	var nextTitle = '';
+	var nextState = { additionalInformation: 'Register to login' };
+
+	// This will create a new entry in the browser's history, without reloading
+	window.history.pushState(nextState, nextTitle, nextURL);
+
+	// This will replace the current entry in the browser's history, without reloading
+	window.history.replaceState(nextState, nextTitle, nextURL);
+</script>

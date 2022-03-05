@@ -5,7 +5,7 @@
     <div class="form-field d-flex align-items-center"> <span class="far fa-envelope"></span> <input type="text" name="email" id="inputEmail" placeholder="Email/NoBP"> </div>
     <div class="form-field d-flex align-items-center"> <span class="fas fa-key"></span> <input type="password" name="password" id="inputPassword" placeholder="Password"> </div> <button class="btn mt-3" type="submit">Login</button>
 </form>
-<div class="text-center fs-6"> <a href="#">Forget password?</a> or <a href="#" hx-get="{% url 'register' %}" hx-swap="innerHTML" hx-target="#target" >Sign up</a> </div>
+<div class="text-center fs-6"> <a href="{% url 'password_reset' %}">Forget password?</a> or <a href="#" hx-get="{% url 'register' %}" hx-swap="innerHTML" hx-target="#target" >Sign up</a> </div>
 <div class="text-center fs-6 mt-2"><p>Copyright &copy; SteveG08</p></div>
 
 {% for field in login_form %}

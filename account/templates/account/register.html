@@ -8,7 +8,7 @@
     <div class="form-field d-flex align-items-center"> <span class="fas fa-key"></span> <input type="password" name="password2" id="inputPassword2" placeholder="Confirm password"> </div>
     <button class="btn mt-3" type="submit">Register</button>
 </form>
-<div class="text-center fs-6"> <a href="#">Forget password?</a> or <a href="#" hx-get="{% url 'login' %}" hx-swap="innerHTML" hx-target="#target">Login</a> </div>
+<div class="text-center fs-6"> <a href="{% url 'password_reset' %}">Forget password?</a> or <a href="#" hx-get="{% url 'login' %}" hx-swap="innerHTML" hx-target="#target">Login</a> </div>
 <div class="text-center fs-6 mt-2"><p>Copyright &copy; SteveG08</p></div>
 
 {% for field in registration_form %}
