@@ -21,6 +21,22 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Martel+Sans&family=Roboto:wght@300&display=swap');
 
+        :root {
+             --primary-light: #8abdff;
+             --primary: #6d5dfc;
+             --primary-dark: #5b0eeb;
+             --white: #fff;
+             --greyLight-1: #e4ebf5;
+             --greyLight-2: #c8d0e7;
+             --greyLight-3: #bec8e4;
+             --greyDark: #9baacf;
+        }
+
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
         body{
             font-family: 'Roboto', sans-serif;
         }
@@ -72,23 +88,179 @@
             #accordian a:not(:only-child)::after { display: none; }
             .show-dropdown { padding-left: 0px; }
         }
+
+
+        /*Testing Post CSS*/
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+        
+        ::selection{
+        color: #fff;
+        background: #1da1f2;
+        }
+        .wrapper{
+        background: #fff;
+        width: 100%;
+        border-radius: 15px;
+        padding: 25px 25px 15px 25px;
+        box-shadow: 0 0 0.1rem var(--greyLight-2), 0 0 0.8rem var(--white);
+        
+        }
+        .input-box{
+        padding-top: 10px;
+        border-bottom: 1px solid #e6e6e6;
+        }
+        .input-box .tweet-area{
+        position: relative;
+        min-height: 130px;
+        max-height: 170px;
+        overflow-y: auto;
+        }
+        .tweet-area::-webkit-scrollbar{
+        width: 0px;
+        }
+        .tweet-area .placeholder{
+        position: absolute;
+        margin-top: -3px;
+        font-size: 22px;
+        color: #98A5B1;
+        pointer-events: none;
+        }
+        .tweet-area .input{
+        outline: none;
+        font-size: 20px;
+        min-height: inherit;
+        word-wrap: break-word;
+        word-break: break-all;
+        color: black;
+        }
+        .tweet-area .editable{
+        position: relative;
+        z-index: 5;
+        }
+        .tweet-area .readonly{
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        color: transparent;
+        background: transparent;
+        }
+        .readonly .highlight{
+        background: #fd9bb0;
+        }
+        .input-box .privacy{
+        color: #1da1f2;
+        margin: 15px 0;
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 10px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        }
+        .privacy:hover, .icons li:hover{
+        background: #e7f5fe;
+        }
+        .privacy i{
+        font-size: 18px;
+        }
+        .privacy span{
+        font-size: 15px;
+        font-weight: 600;
+        margin-left: 7px;
+        }
+        .bottom{
+        display: flex;
+        margin-top: 13px;
+        align-items: center;
+        justify-content: space-between;
+        }
+        .bottom .icons{
+        display: inline-flex;
+        }
+        .icons li{
+        list-style: none;
+        color: #1da1f2;
+        font-size: 20px;
+        margin: 0 2px;
+        height: 38px;
+        width: 38px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background 0.2s ease;
+        }
+        .bottom .content{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+        .bottom .counter{
+        color: #333;
+        display: none;
+        font-weight: 500;
+        margin-right: 15px;
+        padding-right: 15px;
+        border-right: 1px solid #aab8c2;
+        }
+        .bottom button{
+        padding: 9px 18px;
+        border: none;
+        outline: none;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 700;
+        background: #1da1f2;
+        color: #fff;
+        cursor: pointer;
+        opacity: 0.5;
+        pointer-events: none;
+        transition: background 0.2s ease;
+        }
+        .bottom button.active{
+        opacity: 1;
+        pointer-events: auto;
+        }
+        .bottom button:hover{
+        background: #0d8bd9;
+        }
+        .thumbnail_images ul {
+            list-style: none;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            margin-top: 10px
+        }
+
+        .thumbnail_images ul li {
+            margin: 5px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.5s
+        }
+
+        .thumbnail_images ul li:hover {
+            border: 2px solid #eee
+        }
     </style>
     
 </head>
+{% block head %}{% endblock head %}
 <body>
 
 	<!-- Has to use visible overflow as a workaround position sticky -->
     <div id="main-wrapper" style="overflow: visible !important;">
 
-        {% include 'snippets/header_2.html' %}
+        {% include 'snippets/header.html' %}
         
         
             <div class="container-fluid" id="main-content" style="padding-top: 2rem;">
-                <div class="row">
+                <div class="row g-0">
                     <div class="col-xl-2-5 col-lg-2-5 col-md-2-5 col-sm-2-5 col-2-5 m-0 p-0" style="position: -webkit-sticky;position: sticky;top: 100px;height: 100vh; display: flex;">
                         {% include 'snippets/sidebar.html' %}
-                    </div>
-                    
+                    </div> 
                     {% block content %}{% endblock %}
                     
                 </div>
@@ -121,5 +293,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     {% include 'snippets/js/sidebar.js' %}
+
+    {% block js %}{% endblock js %}
 </body>
 </html>

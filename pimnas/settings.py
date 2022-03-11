@@ -40,9 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_htmx',
+    'django_editorjs',
 
     'personal',
     'account',
+    'account_profile',
+    'post',
+    'group',
+    'feed',
+    
 ]
 
 MIDDLEWARE = [
@@ -127,9 +133,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'account.Account'
 AUTHENTICATION_BACKENDS = ( 
-    'django.contrib.auth.backends.ModelBackend',
-    'django.contrib.auth.backends.AllowAllUsersModelBackend',
     'account.backends.EmailOrIdentificationBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 # Internationalization
@@ -159,6 +164,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
 TEMP = os.path.join(BASE_DIR, 'media_cdn/temp')
 
 BASE_URL = "http://127.0.0.1:8000"
+LOGIN_URL = '/login'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

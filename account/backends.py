@@ -22,15 +22,12 @@ class CaseInsensitiveModelBackend(ModelBackend):
 
 
 class EmailOrIdentificationBackend(ModelBackend):
-    supports_object_permissions = True
-    supports_anonymous_user = False
-    supports_inactive_user = False
 
     def authenticate(self, request, email=None, password=None, **kwargs):
         try:
             print("Try")
             print(email)
-           # Try to fetch the user by searching the identification or email field
+            # Try to fetch the user by searching the identification or email field
             user = MyUser.objects.get(Q(identification=email)|Q(email=email))
             if user.check_password(password):
                 return user
@@ -38,6 +35,7 @@ class EmailOrIdentificationBackend(ModelBackend):
             # Run the default password hasher once to reduce the timing
             # difference between an existing and a non-existing user (#20760).
             MyUser().set_password(password)
+            return None
 
 
 class IDAuthBackend():
