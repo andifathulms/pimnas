@@ -33,13 +33,13 @@
         </li>
         <li class="nav-item dropdown dropstart">
           <!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> -->
-            <img class="account-image rounded-circle m-auto d-block dropdown-toggle" id="id_profile_links" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="https://i.imgur.com/UXdKE3o.jpg" alt="" width="40" height="40">
+            <img class="account-image rounded-circle m-auto d-block dropdown-toggle" id="id_profile_links" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="{{request.user.profile_image.url}}" alt="" width="40" height="40">
           <!-- </a> -->
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="{% url 'account:view' user_id=request.user.id %}">Account</a></li>
             <li><a class="dropdown-item" href="#">Another action</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
           </ul>
         </li>
       </ul>

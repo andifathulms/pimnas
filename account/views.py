@@ -4,6 +4,9 @@ from django.contrib.auth import login, authenticate, logout
 
 from account.forms import RegistrationForm, AccountAuthenticationForm, LoginAuthenticationForm
 
+from account.models import Account
+from account_profile.models import AccountProfile
+
 
 def register_view(request, *args, **kwargs):
 	user = request.user
@@ -79,4 +82,17 @@ def get_redirect_if_exists(request):
 	return redirect
 
 def account_view(request, *args, **kwargs):
-	return render(request, "account/account_view.html", context={})
+	context = {}
+	user_id = kwargs.get("user_id")
+
+	try:
+		account = Account.objects.get(pk=user_id)
+		profile = AccountProfile.objects.get(account=account)
+	except:
+		return HttpResponse('Something went wrong..')
+	
+	if account:
+		context['account'] = account
+		context['profile'] = profile
+
+	return render(request, "account/account_view.html", context)
