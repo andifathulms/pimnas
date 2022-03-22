@@ -1,8 +1,6 @@
 from django.db import models
 from django_editorjs import EditorJsField
 
-from account.models import Account
-
 class Group(models.Model):
     TYPES = (
         ('1', 'UKM'),
@@ -10,9 +8,9 @@ class Group(models.Model):
     )
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=255, choices=TYPES)
-    members = models.ManyToManyField(Account, blank=True, related_name='members')
-    admins = models.ManyToManyField(Account, blank=True, related_name='admins')
-    pembina = models.ManyToManyField(Account, blank=True, related_name='pembina')
+    members = models.ManyToManyField('account.Account', blank=True, related_name='members')
+    admins = models.ManyToManyField('account.Account', blank=True, related_name='admins')
+    pembina = models.ManyToManyField('account.Account', blank=True, related_name='pembina')
     about = EditorJsField()
     achievement = EditorJsField()
     agenda = EditorJsField()
@@ -35,5 +33,10 @@ class Group(models.Model):
     
     def is_admin(self, acc):
         if acc in self.admins.all():
+            return True
+        return False
+
+    def is_in_this_group(self, acc):
+        if acc in self.members.all() or acc in self.admins.all() or acc in self.pembina.all():
             return True
         return False

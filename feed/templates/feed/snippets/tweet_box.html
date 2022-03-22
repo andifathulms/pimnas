@@ -1,0 +1,36 @@
+<div class="wrapper mb-2"> 
+    <form onsubmit='return copyContent()' method= "post" hx-encoding="multipart/form-data" hx-post= "{% url 'home' %}" hx-swap="innerHTML" hx-target = "#post-content" hx-indicator="#spinner">
+    <div class="input-box">
+      <div class="tweet-area">
+        <span class="placeholder">What's happening?</span>
+        <textarea name="body" id="hiddenTextarea" cols="30" rows="10" style="display: none;"></textarea>
+        <div class="input editable" contenteditable="true" spellcheck="false" id="tweet-box"></div>
+        <div class="input readonly" contenteditable="true" spellcheck="false"></div>
+        <div class="thumbnail_images">
+          <ul id="thumbnail">
+              
+          </ul>
+       </div>
+      </div>
+      <div class="privacy">
+        <i class="fas fa-globe-asia"></i>
+        <span>Post as {{group}}</span>
+      </div>
+    </div>
+    <div class="bottom">
+      <ul class="icons">
+        <li>
+          <label for="id_image">
+            <i class="far fa-file-image"></i>
+          </label>
+          <input type="file" id="id_image" class="clearablefileinput" name="image" multiple="" accept="image/*" style="display: none;">
+        </li>
+      </ul>
+      <div class="content">
+        <span class="counter">250</span>
+        <button>Tweet</button>
+        <!-- <img  id="spinner" class="htmx-indicator" src="https://i1.wp.com/www.cssscript.com/wp-content/uploads/2014/10/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg?fit=400,300&ssl=1"/> -->
+      </div>
+    </div>
+    </form>
+</div>

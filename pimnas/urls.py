@@ -38,6 +38,7 @@ urlpatterns = [
     path('register/', register_view, name="register"),
 
     path('account/', include('account.urls', namespace='account')),
+    path('feed/', include('feed.urls', namespace='feed')),
 
     # Password reset links (ref: https://github.com/django/django/blob/master/django/contrib/auth/views.py)
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='account/snippets/password_reset/password_change_done.html'), 

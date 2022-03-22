@@ -11,11 +11,12 @@ class Feed(models.Model):
     author = models.ForeignKey(Account, on_delete=models.CASCADE)
     author_group = models.ForeignKey(Group, on_delete=models.CASCADE)
     likes = models.ManyToManyField(Account, blank=True, related_name='likes')
-    has_url = models.BooleanField(default=False, blank=True)
-    url = models.URLField(max_length=255, blank=True, null=True)
 
-    def __str__(self):
-        return self.author + "-" + self.pk
+    def addLike(self, acc):
+        if acc in self.likes.all():
+            self.likes.remove(acc)
+        else:
+            self.likes.add(acc)
 
 class Comment(models.Model):
     comment = models.TextField()

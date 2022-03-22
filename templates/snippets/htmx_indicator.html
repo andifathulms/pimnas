@@ -1,0 +1,34 @@
+<style>
+    .indicator-style {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        z-index: -1;
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        top: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+    .htmx-request .htmx-indicator{
+        z-index: 15;
+    }
+    .htmx-request.htmx-indicator{
+        z-index: 15;
+    }
+</style>
+
+<div id="spinner" class="htmx-indicator indicator-style">
+    <div class="spinner-grow text-primary" style="width: 6rem; height: 6rem;">
+        <span class="sr-only">Loading....</span>
+    </div>
+    <div class="spinner-grow text-success" role="status" style="width: 6rem; height: 6rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-danger" role="status" style="width: 6rem; height: 6rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>

@@ -91,8 +91,11 @@ def account_view(request, *args, **kwargs):
 	except:
 		return HttpResponse('Something went wrong..')
 	
+	group = request.user.check_in_group()
+
 	if account:
 		context['account'] = account
 		context['profile'] = profile
+		context['group'] = group
 
 	return render(request, "account/account_view.html", context)

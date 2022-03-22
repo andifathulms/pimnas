@@ -1,40 +1,106 @@
 {% extends 'personal/home.html' %}
 
+{% block head %}
+  {% include 'essential.css' %}
+{% endblock head %}
 {% block post %}
-<div class="wrapper mb-2"> 
-    <form onsubmit='return copyContent()' method= "post" hx-encoding="multipart/form-data" hx-post= "{% url 'home' %}" hx-swap="innerHTML" hx-target = "#post-content" hx-indicator="#spinner">
-    <div class="input-box">
-      <div class="tweet-area">
-        <span class="placeholder">What's happening?</span>
-        <textarea name="body" id="hiddenTextarea" cols="30" rows="10" style="display: none;"></textarea>
-        <div class="input editable" contenteditable="true" spellcheck="false" id="tweet-box"></div>
-        <div class="input readonly" contenteditable="true" spellcheck="false"></div>
-        <div class="thumbnail_images">
-          <ul id="thumbnail">
-              
-          </ul>
-       </div>
-      </div>
-      <div class="privacy">
-        <i class="fas fa-globe-asia"></i>
-        <span>Everyone can reply</span>
-      </div>
-    </div>
-    <div class="bottom">
-      <ul class="icons">
-        <li>
-          <label for="id_image">
-            <i class="far fa-file-image"></i>
-          </label>
-          <input type="file" id="id_image" class="clearablefileinput" name="image" multiple="" accept="image/*" style="display: none;">
-        </li>
-      </ul>
-      <div class="content">
-        <span class="counter">250</span>
-        <button>Tweet</button>
-        <!-- <img  id="spinner" class="htmx-indicator" src="https://i1.wp.com/www.cssscript.com/wp-content/uploads/2014/10/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg?fit=400,300&ssl=1"/> -->
-      </div>
-    </div>
-    </form>
-</div>
+  {% include 'feed/snippets/tweet_box.html' %}
+  
+  <div id="post-content">
+    {% include 'feed/snippets/main_body.html' %}
+  </div>
 {% endblock post %}
+
+{% block js %}
+<script>
+  function copyContent() {
+      document.getElementById("hiddenTextarea").value =  
+          document.getElementById("tweet-box").innerHTML;
+      return true;
+  }
+</script>
+<script>
+  function onClickedImage(){
+      $(".css-9pa8cd").click(function(){
+        $("#full-image").attr("src", $(this).attr("src"));
+        $('#image-viewer').show();
+      });
+
+      $("#image-viewer .close").click(function(){
+        $('#image-viewer').hide();
+      });
+  }
+  onClickedImage()
+</script>
+<script>
+  const wrapper = document.querySelector(".wrapper"),
+  editableInput = wrapper.querySelector(".editable"),
+  readonlyInput = wrapper.querySelector(".readonly"),
+  placeholder = wrapper.querySelector(".placeholder"),
+  counter = wrapper.querySelector(".counter"),
+  button = wrapper.querySelector("button");
+
+  editableInput.onfocus = ()=>{
+    placeholder.style.color = "#c5ccd3";
+  }
+  editableInput.onblur = ()=>{
+    placeholder.style.color = "#98a5b1";
+  }
+
+  editableInput.onkeyup = (e)=>{
+    let element = e.target;
+    validated(element);
+  }
+  editableInput.onkeypress = (e)=>{
+    let element = e.target;
+    validated(element);
+    placeholder.style.display = "none";
+  }
+
+  function validated(element){
+    let text;
+    let maxLength = 250;
+    let currentlength = element.innerText.length;
+
+    if(currentlength <= 0){
+      placeholder.style.display = "block";
+      counter.style.display = "none";
+      button.classList.remove("active");
+    }else{
+      placeholder.style.display = "none";
+      counter.style.display = "block";
+      button.classList.add("active");
+    }
+
+    counter.innerText = maxLength - currentlength;
+
+    if(currentlength > maxLength){
+      let overText = element.innerText.substr(maxLength); //extracting over texts
+      overText = `<span class="highlight">${overText}</span>`; //creating new span and passing over texts
+      text = element.innerText.substr(0, maxLength) + overText; //passing overText value in textTag variable
+      readonlyInput.style.zIndex = "1";
+      counter.style.color = "#e0245e";
+      button.classList.remove("active");
+    }else{
+      readonlyInput.style.zIndex = "-1";
+      counter.style.color = "#333";
+    }
+    readonlyInput.innerHTML = text; //replacing innerHTML of readonly div with textTag value
+  }
+
+  function truncateString(str, num) {
+    // If the length of str is less than or equal to num
+    // just return str--don't truncate it.
+    if (str.length <= num) {
+      return str
+    }
+    // Return str truncated with '...' concatenated to the end of str.
+    return str.slice(0, num) + '...'
+  }
+
+  function replaceString(str, url) {
+    return str.replace(url," ");
+  }
+
+</script>
+{% endblock js %}

@@ -4,6 +4,7 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import os
 
+from group.models import Group
 
 class MyAccountManager(BaseUserManager):
 	def create_user(self, email, identification, password=None):
@@ -71,3 +72,9 @@ class Account(AbstractBaseUser):
 	# Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
 	def has_module_perms(self, app_label):
 		return True
+	
+	def check_in_group(self):
+		for group in Group.objects.all():
+			if group.is_in_this_group(self):
+				return group
+		return None
