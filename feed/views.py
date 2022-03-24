@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.views import View
+from django.views.generic.edit import DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.urls import reverse_lazy
 
-from .models import Feed, Image
-from .forms import FeedForm
+from .models import Feed, Comment, Image
+from .forms import FeedForm, CommentForm
 
 class FeedListView(LoginRequiredMixin, View):
 
@@ -63,6 +65,154 @@ class FeedListView(LoginRequiredMixin, View):
             print(form.errors)
         self.postlist_populated(request, context)
         return render(request, 'feed/snippets/main_body.html', context)
+
+class FeedDetailView(LoginRequiredMixin, View):
+    def get(self, request, pk, *args, **kwargs):
+        post =  Feed.objects.get(pk=pk)
+        form = CommentForm()
+        comments = Comment.objects.filter(post=post).order_by('-created_on')
+        
+        is_post_like = False
+        if request.user in post.likes.all():
+            is_post_like = True
+
+        comment_list = []
+        for comment in comments:
+            is_like = False
+            if request.user in comment.likes.all():
+                is_like = True
+
+            comment_list.append((comment,is_like))
+
+        context = {
+            'post': post,
+            'result': post,
+            'form': form,
+            'comments': comments,
+            'is_post_like' : is_post_like,
+        }        
+        return render(request, 'feed/feed_detail.html', context)
+    def post(self, request, pk, *args, **kwargs):
+        
+        post = Feed.objects.get(pk=pk)
+        form = CommentForm(request.POST)
+        files = request.FILES.getlist('image')
+
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.author = request.user
+            new_comment.post = post
+            new_comment.save()
+
+            # new_comment.create_tags()
+
+            for f in files:
+                img = Image(image=f)
+                img.save()
+                new_comment.image.add(img)
+
+            new_comment.save()
+        else:
+            print(form.errors)
+
+        comments = Comment.objects.filter(post=post).order_by('-created_on')
+
+        context = {
+            'post': post,
+            'form': form,
+            'comments': comments,
+        }
+        print(context)
+        return render(request, 'feed/snippets/feed_detail_new_comment.html', context)
+
+class FeedEditViewHTMX(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+    def get(self, request, pk, *args, **kwargs):
+        post = Feed.objects.get(pk=pk)
+
+
+        context = {
+            'post': post
+        }
+
+        return render(request, 'feed/snippets/feed_detail_inline_editing.html', context)
+    def put(self, request, pk, *args, **kwargs):
+        post = Feed.objects.get(pk=pk)
+        form = FeedForm(request.PUT, request.FILES)
+        files = request.FILES.getlist('image')
+
+        if form.is_valid():
+            print(request.PUT)
+
+            # post.create_tags()
+
+            for f in files:
+                img = Image(image=f)
+                img.save()
+                post.image.add(img)
+
+            #post.save()
+            
+        else:
+            print(form.errors)
+
+        return render(request, 'feed/feed_detail_tweet.html', {})
+
+class FeedDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Feed
+    template_name = 'feed/feed_delete.html'
+    success_url = reverse_lazy('home')
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+
+class AddCommentLike(LoginRequiredMixin, View):
+    def post(self, request, post_pk, pk, *args, **kwargs):
+        comment = Comment.objects.get(pk=pk)
+
+        is_dislike = False
+
+        for dislike in comment.dislikes.all():
+            if dislike == request.user:
+                is_dislike = True
+                break
+
+        if is_dislike:
+            comment.dislikes.remove(request.user)
+
+        is_like = False
+
+        for like in comment.likes.all():
+            if like == request.user:
+                is_like = True
+                break
+
+        if not is_like:
+            comment.likes.add(request.user)
+
+        if is_like:
+            comment.likes.remove(request.user)
+
+        post = Feed.objects.get(pk=post_pk)
+        context={}
+        context["result"] = comment
+        
+        return render(request, 'feed/snippets/comment_like.html', context)
+
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'feed/comment_delete.html'
+
+    def get_success_url(self):
+        pk = self.kwargs['post_pk']
+        return reverse_lazy('feed:feed-detail', kwargs={'pk': pk})
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
 
 class AddLike(LoginRequiredMixin, View):
     def post(self, request, pk, *args, **kwargs):

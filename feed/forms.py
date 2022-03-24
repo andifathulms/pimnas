@@ -19,3 +19,21 @@ class FeedForm(forms.ModelForm):
     class Meta:
         model = Feed
         fields = ['body']
+
+class CommentForm(forms.ModelForm):
+    comment = forms.CharField(
+        label='',
+        widget=forms.Textarea(
+            attrs={'rows': '3',
+                   'placeholder': 'Say Something...'}
+        ))
+
+    image = forms.ImageField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={
+            'multiple': True
+            })
+    )   
+    class Meta:
+        model = Comment
+        fields = ['comment']
